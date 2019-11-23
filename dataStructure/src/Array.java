@@ -92,6 +92,9 @@ public class Array<E> {
      * @return
      */
     public E remove(int index){
+        if(isEmpty()){
+            throw new IllegalArgumentException("Invalid index");
+        }
         if(index<0 || index>=size){
             throw new IllegalArgumentException("Invalid index");
         }
@@ -101,7 +104,9 @@ public class Array<E> {
             data[i-1] = data[i];
         }
         // 释放引用
-        data[size] = null;
+        if(size < getCapacity()){
+            data[size] = null;
+        }
         size--;
         // 如果当前size小于1/3capacity, capacity缩到原来的1/2
         if(size >= 10 && size*3 <= getCapacity()){
@@ -124,6 +129,9 @@ public class Array<E> {
     }
     public E getLast(){
         return get(size - 1);
+    }
+    public E getFirst(){
+        return get(0);
     }
 
     /**

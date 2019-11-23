@@ -1,3 +1,4 @@
+import java.util.Random;
 
 public class LoopQueue<E> implements Queue<E>{
     private E[] data;
@@ -119,5 +120,26 @@ public class LoopQueue<E> implements Queue<E>{
         }
         System.out.println(queue.isEmpty());
         System.out.println(queue.isFull());
+
+        LoopQueue<Integer> testLoopQueue = new LoopQueue<Integer>(20);
+        ArrayQueue<Integer> testArrayQueue = new ArrayQueue<>();
+        int opCount = 100000;
+        System.out.println("LoopQueue: " + testQueue(testLoopQueue, opCount));
+        System.out.println("testArrayQueue: " + testQueue(testArrayQueue, opCount));
+//        LoopQueue: 0.029212068
+//        testArrayQueue: 4.434817982
+    }
+    private static double testQueue(Queue queue, int opCount){
+        Random random = new Random();
+        long start_ts = System.nanoTime();
+        for (int i = 0; i < opCount; i++) {
+            queue.enqueue(random.nextInt(Integer.MAX_VALUE));
+        }
+        for (int i = 0; i < opCount; i++) {
+            queue.dequeue();
+        }
+        long end_ts = System.nanoTime();
+        return (end_ts - start_ts) / 1000000000.0;
+
     }
 }

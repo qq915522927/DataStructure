@@ -36,9 +36,11 @@ public class Array<E> {
         if(index>size || index<0){
             throw new IllegalArgumentException("Index must >=0 <=size");
         }
-        if(size==data.length){
-            throw new IllegalArgumentException("Array is Full");
+        if(size == getCapacity()){
+            // 扩展数组大小到原来的2倍
+            resize(getCapacity()*2);
         }
+
         //把要添加位置后的元素全部后移一格
         for(int i = size-1; i>=index;i--){
             data[i+1] = data[i];
@@ -101,19 +103,37 @@ public class Array<E> {
         // 释放引用
         data[size] = null;
         size--;
+        // 如果当前size小于1/3capacity, capacity缩到原来的1/2
+        if(size >= 10 && size*3 <= getCapacity()){
+            resize(getCapacity()/2);
+        }
+
         return res;
     }
     public E removeFirst(){
         return remove(0);
     }
     public E removeLast(){
-        return remove(size);
+        return remove(size-1);
     }
     public void removeElement(E e){
         int index = find(e);
         if(index != -1){
             remove(index);
         }
+    }
+
+    /**
+     * 开辟新的newSize大小的数组
+     * resize 数组，复制原素组元素到新数组
+     * @param newSize
+     */
+    private void resize(int newSize){
+        E[] newData = (E[]) new Object[newSize];
+        for (int i = 0; i < size; i++) {
+            newData[i] = data[i];
+        }
+        this.data = newData;
     }
     @Override
     public String toString() {
@@ -178,6 +198,15 @@ public class Array<E> {
         students.addLast(new Student(3, "Tommy3"));
         System.out.println(students);
 
+        for (int i = 0; i < 100; i++) {
+            array.addLast(i);
+        }
+        System.out.println(array);
+
+        for (int i = 0; i < 100; i++) {
+            array.removeLast();
+        }
+        System.out.println(array);
 
     }
 }

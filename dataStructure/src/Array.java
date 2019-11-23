@@ -122,6 +122,9 @@ public class Array<E> {
             remove(index);
         }
     }
+    public E getLast(){
+        return get(size - 1);
+    }
 
     /**
      * 开辟新的newSize大小的数组

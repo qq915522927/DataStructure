@@ -1,5 +1,7 @@
-public class Array {
-    private int[] data;
+import java.util.Objects;
+
+public class Array<E> {
+    private E[] data;
     private int size;
 
     /**
@@ -7,7 +9,7 @@ public class Array {
      * @param capacity
      */
     public Array(int capacity){
-        data = new int[capacity];
+        data = (E[])new Object[capacity];
         size = 0;
     }
 
@@ -26,11 +28,11 @@ public class Array {
     public boolean isEmpty(){
         return size == 0;
     }
-    public void addLast(int e){
+    public void addLast(E e){
         add(size, e);
 
     }
-    public void add(int index, int e){
+    public void add(int index, E e){
         if(index>size || index<0){
             throw new IllegalArgumentException("Index must >=0 <=size");
         }
@@ -45,23 +47,23 @@ public class Array {
         size++;
 
     }
-    public int get(int index){
+    public E get(int index){
 
         if(index>size || index<0){
             throw new IllegalArgumentException("Index must >=0 <=size");
         }
         return data[index];
     }
-    public int set(int index, int e){
+    public void set(int index, E e){
 
         if(index>size || index<0){
             throw new IllegalArgumentException("Index must >=0 <=size");
         }
-        return data[index] = e;
+         data[index] = e;
     }
-    public boolean contains(int e){
+    public boolean contains(E e){
         for (int i = 0; i < size; i++) {
-            if(data[i] == e){
+            if(data[i].equals(e)){
                 return true;
             }
         }
@@ -73,9 +75,9 @@ public class Array {
      * @param e
      * @return
      */
-    public int find(int e){
+    public int find(E e){
         for (int i = 0; i < size; i++) {
-            if(data[i] == e){
+            if(data[i].equals(e)){
                 return i;
             }
         }
@@ -87,25 +89,27 @@ public class Array {
      * @param index
      * @return
      */
-    public int remove(int index){
+    public E remove(int index){
         if(index<0 || index>=size){
             throw new IllegalArgumentException("Invalid index");
         }
-        int res = data[index];
+        E res = data[index];
         // index位置后的所有元素向前移动一格
         for (int i = index + 1; i < size ; i++) {
             data[i-1] = data[i];
         }
+        // 释放引用
+        data[size] = null;
         size--;
         return res;
     }
-    public int removeFirst(){
+    public E removeFirst(){
         return remove(0);
     }
-    public int removeLast(){
+    public E removeLast(){
         return remove(size);
     }
-    public void removeElement(int e){
+    public void removeElement(E e){
         int index = find(e);
         if(index != -1){
             remove(index);
@@ -117,7 +121,7 @@ public class Array {
         res.append(String.format("Array: size=%d, capacity=%d\n", size, getCapacity()));
         res.append('[');
         for (int i = 0; i < size ; i++) {
-            res.append(data[i]);
+            res.append(data[i].toString());
             if(i != size-1){
                 res.append(", ");
             }
@@ -126,8 +130,12 @@ public class Array {
         return res.toString();
     }
 
+    /**
+     * 测试Array
+     * @param args
+     */
     public static void main(String[] args) {
-        Array array = new Array(20);
+        Array<Integer> array = new Array<Integer>(20);
         for (int i = 0; i < 10; i++) {
             array.addLast(i);
         }
@@ -149,5 +157,27 @@ public class Array {
         System.out.println(array.find(2));
         System.out.println(array.contains(200));
         System.out.println(array.contains(2));
+        // 测试自定义类类
+        class Student{
+            private int id;
+            private String name;
+            Student(int id, String name){
+                this.id = id;
+                this.name = name;
+            }
+
+            @Override
+            public String toString() {
+                return String.format("Student(ID %d, Name: %s)", id, name);
+            }
+        }
+
+        Array<Student> students = new Array<>(20);
+        students.addLast(new Student(1, "Tommy"));
+        students.addLast(new Student(2, "Tommy2"));
+        students.addLast(new Student(3, "Tommy3"));
+        System.out.println(students);
+
+
     }
 }

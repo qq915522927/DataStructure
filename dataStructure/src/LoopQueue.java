@@ -105,27 +105,32 @@ public class LoopQueue<E> implements Queue<E>{
     }
 
     public static void main(String[] args) {
-        LoopQueue<Integer> queue = new LoopQueue<Integer>(20);
-        for (int i = 0; i < 300 ; i++) {
-            queue.enqueue(i);
+//        LoopQueue<Integer> queue = new LoopQueue<Integer>(20);
+//        for (int i = 0; i < 300 ; i++) {
+//            queue.enqueue(i);
+//
+//        }
+//        System.out.println(queue);
+//        int size = queue.getSize();
+//        for (int i = 0; i < size; i++) {
+//            if(i!=queue.dequeue()){
+//                throw new IllegalArgumentException("Assert error");
+//            };
+//            System.out.println(queue);
+//        }
+//        System.out.println(queue.isEmpty());
+//        System.out.println(queue.isFull());
 
-        }
-        System.out.println(queue);
-        int size = queue.getSize();
-        for (int i = 0; i < size; i++) {
-            if(i!=queue.dequeue()){
-                throw new IllegalArgumentException("Assert error");
-            };
-            System.out.println(queue);
-        }
-        System.out.println(queue.isEmpty());
-        System.out.println(queue.isFull());
-
+        /**
+         * test for all kinds of queue
+         */
         LoopQueue<Integer> testLoopQueue = new LoopQueue<Integer>(20);
-        ArrayQueue<Integer> testArrayQueue = new ArrayQueue<>();
-        int opCount = 100000;
+//        ArrayQueue<Integer> testArrayQueue = new ArrayQueue<>();
+        LinkedListQueue<Integer> testLinkedListQueue = new LinkedListQueue<>();
+        int opCount = 1000000;
         System.out.println("LoopQueue: " + testQueue(testLoopQueue, opCount));
-        System.out.println("testArrayQueue: " + testQueue(testArrayQueue, opCount));
+//        System.out.println("testArrayQueue: " + testQueue(testArrayQueue, opCount));
+        System.out.println("testLinkedListQueue: " + testQueue(testLinkedListQueue, opCount));
 //        LoopQueue: 0.029212068
 //        testArrayQueue: 4.434817982
     }

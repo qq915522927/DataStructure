@@ -28,6 +28,23 @@ public class LinkedListQueue<E> implements Queue<E> {
         return linkedList.isEmpty();
     }
 
+    @Override
+    public String toString() {
+        return String.format("LinkedListQueue: %s", linkedList.toString());
+    }
+
+    public static void main(String[] args) {
+        LinkedListQueue<Integer> queue = new LinkedListQueue<>();
+        for (int i = 0; i < 5 ; i++) {
+            queue.enqueue(i);
+            System.out.println(queue);
+        }
+        for (int i = 0; i < 5 ; i++) {
+            queue.dequeue();
+            System.out.println(queue);
+        }
+    }
+
 
     /**
      * Inner class

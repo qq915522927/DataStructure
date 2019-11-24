@@ -114,6 +114,9 @@ public class LinkedList<E> {
     public E removeFirst(){
         return remove(0);
     }
+    public boolean isEmpty(){
+        return size == 0;
+    }
 
     @Override
     public String toString() {

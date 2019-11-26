@@ -49,6 +49,36 @@ public class BST<E extends Comparable<E>> {
     }
 
     /***
+     * 后序遍历
+     * 遍历的元素按顺序排列
+     */
+    public void postOrder(){
+        postOrder(root);
+    }
+    private void postOrder(Node root){
+        if(root==null){
+            return;
+        }
+        postOrder(root.left);
+        postOrder(root.right);
+        System.out.println(root.e.toString());
+    }
+    /***
+     * 中序遍历
+     * 遍历的元素按顺序排列
+     */
+    public void midOrder(){
+        midOrder(root);
+    }
+    private void midOrder(Node root){
+        if(root==null){
+            return;
+        }
+        midOrder(root.left);
+        System.out.println(root.e.toString());
+        midOrder(root.right);
+    }
+    /***
      * 前序遍历
      */
     public void preOrder(){
@@ -62,9 +92,29 @@ public class BST<E extends Comparable<E>> {
         preOrder(root.left);
         preOrder(root.right);
     }
+
+    /**
+     * 非递归实现
+     * 利用栈回溯
+     */
+    public void preOrder2(){
+        LinkedListStack<Node> stack = new LinkedListStack<>();
+        stack.push(root);
+        while(!stack.isEmpty()){
+            Node cur = stack.pop();
+            System.out.println(cur.e.toString());
+            if(cur.right != null){
+                stack.push(cur.right);
+            }
+            if(cur.left != null){
+                stack.push(cur.left);
+            }
+        }
+    }
     public void add(E e){
         root = add(e, root);
     }
+
     public int getSize(){
         return size;
     }
@@ -101,6 +151,69 @@ public class BST<E extends Comparable<E>> {
         }
         return builder.toString();
     }
+    private E removeMin(){
+        E ret = minimum(root).e;
+        root = removeMin(root);
+        return ret;
+    }
+    private Node minimum(Node root){
+        if(root.left == null){
+            return root;
+        }
+
+        return minimum(root.left);
+    }
+    private Node removeMin(Node root){
+        if(root.left==null){
+            if(root.right != null){
+                return root.right;
+            } else{
+                return null;
+            }
+        }
+
+        root.left = removeMin(root.left);
+        return root;
+    }
+    private Node removeMax(Node root){
+        if(root.right==null){
+            if(root.left != null){
+                return root.left;
+            } else{
+                return null;
+            }
+        }
+
+        root.right = removeMax(root.right);
+        return root;
+    }
+    public void removeEle(E e){
+        root = removeEle(e, root);
+    }
+    private Node removeEle(E e, Node root){
+        if(root==null){
+             throw new IllegalArgumentException(String.format("Cant find %s", e.toString()));
+        }
+        if(root.e.equals(e)){
+            if(root.left!=null){
+                Node newRoot = removeMax(root.left);
+                newRoot.left = root.left;
+                return newRoot;
+            }else if(root.right!=null){
+                Node newRoot = removeMin(root.right);
+                newRoot.right = root.right;
+                return newRoot;
+            }
+            return null;
+        }
+
+        if(e.compareTo(root.e)>0){
+            root.right = removeEle(e, root.right);
+        } else{
+            root.left = removeEle(e, root.left);
+        }
+        return root;
+    }
 
     @Override
     public String toString() {
@@ -118,9 +231,35 @@ public class BST<E extends Comparable<E>> {
         bst.add(5);
         bst.add(4);
         bst.add(0);
+        bst.add(9);
 //        System.out.println(bst.contains(3));
 //        System.out.println(bst.contains(0));
 //        bst.preOrder();
+//        System.out.println(bst);
+//        System.out.println("#######mid order#############");
+//        bst.midOrder();
+//        System.out.println("#######post order#############");
+//        bst.postOrder();
+//        System.out.println("#######pre order#############");
+//        bst.preOrder2();
+//        System.out.println(bst);
+//        System.out.println("Minimum "+bst.removeMin());
+//        System.out.println(bst);
+//        System.out.println("Minimum "+bst.removeMin());
+//        System.out.println(bst);
+//        System.out.println("Minimum "+bst.removeMin());
+//        System.out.println(bst);
+//        System.out.println("Minimum "+bst.removeMin());
+//        System.out.println(bst);
+        System.out.println(bst);
+        System.out.println("#########remove 0###########");
+        bst.removeEle(0);
+        System.out.println(bst);
+        System.out.println("#########remove 9###########");
+        bst.removeEle(9);
+        System.out.println(bst);
+        System.out.println("#########remove 8###########");
+        bst.removeEle(8);
         System.out.println(bst);
 
     }

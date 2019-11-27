@@ -49,6 +49,19 @@ public class LinkedList<E> {
         size--;
         return res.value;
     }
+    public void removeEle(E e){
+        removeEle(e, dummyHead.next);
+    }
+    private Node removeEle(E e, Node root){
+        if(root==null){
+            return null;
+        }
+        if(root.value.equals(e)){
+            return removeEle(e, root.next);
+        }
+        root.next = removeEle(e, root.next);
+        return root;
+    }
 
     public E get(int index) {
 
@@ -116,6 +129,18 @@ public class LinkedList<E> {
     }
     public boolean isEmpty(){
         return size == 0;
+    }
+    public boolean contains(E e){
+        return contains(dummyHead.next, e);
+    }
+    private boolean contains(Node root, E e){
+        if(root == null){
+            return false;
+        }
+        if(root.value.equals(e)){
+            return true;
+        }
+        return contains(root.next, e);
     }
 
     @Override

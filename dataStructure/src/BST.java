@@ -163,6 +163,13 @@ public class BST<E extends Comparable<E>> {
 
         return minimum(root.left);
     }
+    private Node maximum(Node root){
+        if(root.right == null){
+            return root;
+        }
+
+        return maximum(root.right);
+    }
     private Node removeMin(Node root){
         if(root.left==null){
             if(root.right != null){
@@ -195,14 +202,18 @@ public class BST<E extends Comparable<E>> {
              throw new IllegalArgumentException(String.format("Cant find %s", e.toString()));
         }
         if(root.e.equals(e)){
-            if(root.left!=null){
-                Node newRoot = removeMax(root.left);
-                newRoot.left = root.left;
-                return newRoot;
+          if(root.left!=null){
+                Node candiate = maximum(root.left);
+                Node newLeft= removeMax(root.left);
+                candiate.left = newLeft;
+                candiate.right = root.right;
+                return candiate;
             }else if(root.right!=null){
-                Node newRoot = removeMin(root.right);
-                newRoot.right = root.right;
-                return newRoot;
+              Node candiate = minimum(root.right);
+              Node newRight = removeMin(root.right);
+              candiate.right = newRight;
+              candiate.left = root.left;
+              return candiate;
             }
             return null;
         }
@@ -260,6 +271,12 @@ public class BST<E extends Comparable<E>> {
         System.out.println(bst);
         System.out.println("#########remove 8###########");
         bst.removeEle(8);
+        System.out.println(bst);
+        System.out.println("#########remove 1###########");
+        bst.removeEle(1);
+        System.out.println(bst);
+        System.out.println("#########remove 5###########");
+        bst.removeEle(5);
         System.out.println(bst);
 
     }

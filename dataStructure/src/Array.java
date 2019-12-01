@@ -114,6 +114,14 @@ public class Array<E> {
 
         return res;
     }
+    public void swap(int i, int j){
+        if(i<0|| i>=size || j<0 || j>=size){
+            throw new IllegalArgumentException("Invalid index");
+        }
+        E t = data[i];
+        data[i] = data[j];
+        data[j] = t;
+    }
     public E removeFirst(){
         return remove(0);
     }

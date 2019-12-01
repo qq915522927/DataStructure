@@ -1,12 +1,29 @@
+import java.util.Comparator;
 import java.util.Random;
 
 public class MaxHeap<E extends Comparable<E>> {
     private Array<E> list;
     private int size;
+    private Comparator<E> comparator;
     public MaxHeap(){
-        this(20);
+        this(20, new Comparator<E>() {
+            @Override
+            public int compare(E o1, E o2) {
+                return o1.compareTo(o2);
+            }
+        });
     }
     public MaxHeap(E[] data){
+        this(data, new Comparator<E>() {
+            @Override
+            public int compare(E o1, E o2) {
+                return o1.compareTo(o2);
+            }
+        });
+
+    }
+    public MaxHeap(E[] data, Comparator<E> comparator){
+        this.comparator = comparator;
         list = new Array<E>(data.length);
         size = data.length;
         for (int i = 0; i < data.length ; i++) {
@@ -19,8 +36,17 @@ public class MaxHeap<E extends Comparable<E>> {
         }
     }
     public MaxHeap(int capacity){
+        this(capacity, new Comparator<E>() {
+            @Override
+            public int compare(E o1, E o2) {
+                return o1.compareTo(o2);
+            }
+        });
+    }
+    public MaxHeap(int capacity, Comparator comparator){
         list = new Array<E>(capacity);
         size = 0;
+        this.comparator = comparator;
     }
 
 
@@ -47,11 +73,13 @@ public class MaxHeap<E extends Comparable<E>> {
                 return;
             }
             if(childIndex + 1 < size &&
-                    list.get(childIndex+1).compareTo(list.get(childIndex)) > 0
+                    comparator.compare(list.get(childIndex+1), list.get(childIndex)) > 0
             ){
                 childIndex = childIndex + 1;
             }
-            if(list.get(childIndex).compareTo(list.get(index))>0){
+            if(
+                    comparator.compare(list.get(childIndex), list.get(index)) > 0
+            ){
                 list.swap(index, childIndex);
             }
             index = childIndex;
@@ -80,7 +108,7 @@ public class MaxHeap<E extends Comparable<E>> {
             E cur = list.get(index);
             int parIndex = findParent(index);
             E p = list.get(parIndex);
-            if (p.compareTo(cur) >= 0) {
+            if (comparator.compare(p, cur) >= 0) {
                 return;
             }
             list.swap(parIndex, index);
@@ -95,6 +123,12 @@ public class MaxHeap<E extends Comparable<E>> {
         return size == 0;
     }
 
+    public E getFront(){
+        if(isEmpty()){
+            throw new IllegalArgumentException("The heap is empty");
+        }
+        return list.get(0);
+    }
     public static void main(String[] args) {
         int test_n = 10;
         Random random = new Random();

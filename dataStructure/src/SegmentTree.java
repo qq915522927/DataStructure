@@ -67,6 +67,31 @@ public class SegmentTree<E> {
         }
         return (E) merger.merge(leftRes, rightRes);
     }
+
+    /**
+     * 递归
+     * @param index
+     * @param e
+     */
+    public void update(int index, E e){
+        data[index] = e;
+        updateTree(0, 0, data.length-1, index, e);
+    }
+    private void updateTree(int nodeIndex, int segL, int segR, int updateIndex, E e){
+        if(segL == segR){
+            tree[nodeIndex] = e;
+            return;
+        }
+        int mid = segL + (segR - segL) / 2;
+        if(updateIndex <= mid){
+            // update left tree
+            updateTree(leftChild(nodeIndex), segL, mid, updateIndex, e);
+        } else{
+            // update right tree
+            updateTree(rightChild(nodeIndex), mid + 1, segR, updateIndex, e);
+        }
+        tree[nodeIndex] = (E)merger.merge(tree[leftChild(nodeIndex)], tree[rightChild(nodeIndex)]);
+    }
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -101,5 +126,13 @@ public class SegmentTree<E> {
 
         System.out.println("Query 3, 6, expect 18");
         System.out.println(tree.query(3, 6));
+
+        System.out.println("Update 0 to 10, expect 55");
+        tree.update(0, 10);
+        System.out.println(tree.query(0, 9));
+
+        System.out.println("Update 9 to 0, expect 46");
+        tree.update(9, 0);
+        System.out.println(tree.query(0, 9));
     }
 }

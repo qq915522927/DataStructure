@@ -2,8 +2,8 @@ import java.util.Random;
 
 public class TestUninonFInd {
     public static void main(String[] args) {
-        int dataN = 100000;
-        int testN = 1000000;
+        int dataN = 1000000;
+        int testN = 10000000;
         Integer[] data = new Integer[dataN];
         for (int i = 0; i < dataN; i++) {
             data[i] = i;
@@ -13,6 +13,7 @@ public class TestUninonFInd {
         UnionFind3<Integer> uf3 = new UnionFind3<>(data);
         UnionFind4<Integer> uf4 = new UnionFind4<>(data);
         UnionFind5<Integer> uf5 = new UnionFind5<>(data);
+        UnionFind6<Integer> uf6 = new UnionFind6<>(data);
 //        System.out.println("Test for uf1");
 //        testUF(uf1, dataN, testN);
 //        System.out.println("Test for uf2, use tree");
@@ -23,6 +24,8 @@ public class TestUninonFInd {
         testUF(uf4, dataN, testN);
         System.out.println("Test for uf5, optimized by compressed path");
         testUF(uf5, dataN, testN);
+        System.out.println("Test for uf6, optimized by compressed path2");
+        testUF(uf6, dataN, testN);
     }
     private static void testUF(UF uf, int dataN, int testN){
         Random random = new Random();

@@ -22,44 +22,6 @@ public class SortAlgo {
             array[insPos] = cur;
         }
     }
-    private static <T extends Comparable> void quickSortOptimized(T[] array, int l, int r){
-        // l close, r close
-        // combine insert sort
-        if(l>=r)
-            return;
-        if(r-l<10){
-            insetSortOptimized(array, l, r);
-            return;
-        }
-        int mid = partition(array, l, r);
-        quickSort(array, l, mid);
-        quickSort(array, mid+1, r);
-
-    }
-    private static <T extends Comparable> void quickSort(T[] array, int l, int r){
-        // l close, r close
-        if(l>=r)
-            return;
-        int mid = partition(array, l, r);
-        quickSort(array, l, mid);
-        quickSort(array, mid+1, r);
-
-    }
-    private static <T extends Comparable> int partition(T[] array, int l, int r){
-        Random random = new Random();
-        swap(l, random.nextInt(r - l) + l, array);
-        T flagEle = array[l];
-        int mid = l;
-        for (int i = l+1; i <r+1 ; i++) {
-            if (flagEle.compareTo(array[i]) > 0) {
-                swap(mid + 1, i, array);
-                mid++;
-            }
-        }
-        swap(l, mid, array);
-        return mid;
-    }
-
     public static <T extends Comparable> void quickSort(T[] array){
         quickSort(array, 0, array.length-1);
 
@@ -148,6 +110,90 @@ public class SortAlgo {
         }
 
     }
+    public static <T extends Comparable> void mergeSort(T[] array){
+        mergeSort(array, 0, array.length-1);
+    }
+    public static <T extends Comparable> void mergeSortOptimized(T[] array){
+        mergeSortOptimized(array, 0, array.length-1);
+    }
+    public static <T extends Comparable> void quickSort2Ways(T[] array){
+        quickSort2Ways(array, 0, array.length-1);
+    }
+
+    private static <T extends Comparable> void quickSort2Ways(T[] array, int l, int r){
+        if((r-l) <= 15){
+            insetSortOptimized(array, l, r);
+            return;}
+        int m = partition2ways(array, l, r);
+        quickSort2Ways(array, l, m);
+        quickSort2Ways(array, m+1, r);
+    }
+    private static <T extends Comparable> int partition2ways(T[] array, int l, int r){
+        Random random = new Random();
+        int maxIndex = r+1;
+        swap(l, random.nextInt(r-l+1) + l, array);
+        T flag = array[l];
+        int i = l + 1;
+        int j = r;
+        while(true){
+            while (i<=r && array[i].compareTo(flag)<0){
+                i++;
+            }
+            while (j>=l+1 && array[j].compareTo(flag)>0){
+                j--;
+            }
+            if(i>j)
+                break;
+            //这里有一个隐含条件，即，array[i] == array[j]
+            swap(i, j, array);
+            i++;
+            j--;
+
+        }
+        assert i-1 == j;
+        swap(l, i-1, array);
+        return i-1;
+
+
+    }
+
+    private static <T extends Comparable> void quickSortOptimized(T[] array, int l, int r){
+        // l close, r close
+        // combine insert sort
+        if(l>=r)
+            return;
+        if(r-l<10){
+            insetSortOptimized(array, l, r);
+            return;
+        }
+        int mid = partition(array, l, r);
+        quickSort(array, l, mid);
+        quickSort(array, mid+1, r);
+
+    }
+    private static <T extends Comparable> void quickSort(T[] array, int l, int r){
+        // l close, r close
+        if(l>=r)
+            return;
+        int mid = partition(array, l, r);
+        quickSort(array, l, mid);
+        quickSort(array, mid+1, r);
+
+    }
+    private static <T extends Comparable> int partition(T[] array, int l, int r){
+        Random random = new Random();
+        swap(l, random.nextInt(r - l) + l, array);
+        T flagEle = array[l];
+        int mid = l;
+        for (int i = l+1; i <r+1 ; i++) {
+            if (flagEle.compareTo(array[i]) > 0) {
+                swap(mid + 1, i, array);
+                mid++;
+            }
+        }
+        swap(l, mid, array);
+        return mid;
+    }
     private static <T extends Comparable> void mergeSortOptimized(T[] array, int l, int r){
         // left close, right close
         if(l>=r){
@@ -170,19 +216,13 @@ public class SortAlgo {
         merge(array, l, mid, r);
 
     }
-    public static <T extends Comparable> void mergeSort(T[] array){
-        mergeSort(array, 0, array.length-1);
-    }
-    public static <T extends Comparable> void mergeSortOptimized(T[] array){
-        mergeSortOptimized(array, 0, array.length-1);
-    }
     private static <T> void swap(int i, int j,T[] array){
         T temp = array[i];
         array[i] = array[j];
         array[j] = temp;
     }
 
-    public static Integer[] generateRandomArray(int count) throws Exception {
+    private static Integer[] generateRandomArray(int count) throws Exception {
         Integer[] res = new Integer[count];
         Random random = new Random();
         for (int i = 0; i < count; i++) {
@@ -190,7 +230,22 @@ public class SortAlgo {
         }
         return res;
     }
-    public static Integer[] generateNeayOrderedArray(int count, int numNotOrder) throws Exception {
+    private static Integer[] generateArrayWithDuplicates(int count, int diffCount) throws Exception {
+        Integer[] res = new Integer[count];
+        Random random = new Random();
+        int n = random.nextInt(Integer.MAX_VALUE);
+        for (int i = 0; i < count; i++) {
+            res[i] = n;
+        }
+        for (int i = 0; i < diffCount; i++) {
+            int index = random.nextInt(count);
+            res[index] = random.nextInt(Integer.MAX_VALUE);
+        }
+
+        return res;
+    }
+
+    private static Integer[] generateNeayOrderedArray(int count, int numNotOrder) throws Exception {
         Integer[] res = new Integer[count];
         for (int i = 0; i < count; i++) {
             res[i] = i;
@@ -205,7 +260,7 @@ public class SortAlgo {
         return res;
     }
 
-    public static Boolean checkOrder(Integer[] array) throws Exception {
+    private static Boolean checkOrder(Integer[] array) throws Exception {
         for (int i = 0; i < array.length-1; i++) {
             if(array[i]>array[i+1]){
                 System.out.println("The array is not ordered");
@@ -215,7 +270,10 @@ public class SortAlgo {
         System.out.println("The array is ordered");
         return true;
     }
-    public static <T> void testSort(Sort algo, int count, String name, boolean nearlyOrdered) throws Exception {
+    private static <T> void testSort(Sort algo, int count, String name, boolean nearlyOrdered) throws Exception {
+        testSort(algo, count, name, nearlyOrdered, false);
+    }
+    private static <T> void testSort(Sort algo, int count, String name, boolean nearlyOrdered, boolean mostDuplicated) throws Exception {
 
         long start = System.nanoTime();
         Integer[] array;
@@ -223,6 +281,10 @@ public class SortAlgo {
             array = generateRandomArray(count) ;
         else
             array = generateNeayOrderedArray(count, 30);
+
+        if(mostDuplicated)
+            array = generateArrayWithDuplicates(count, 30);
+
         StringBuilder builder = new StringBuilder();
         builder.append("-------Test ");
         builder.append(name);
@@ -242,7 +304,7 @@ public class SortAlgo {
 //        Sort<Integer> sort1 = (arr)->{mergeSort(arr);};
 //        testSort(sort1, 100000, "Merge sort1");
 
-        int count = 10000000;
+        int count = 10000;
         boolean ordered = false;
         System.out.println(String.format("Test for Count %s --------", count));
 //        Sort<Integer> sort2 = (arr)->{insetSort(arr);};
@@ -261,5 +323,13 @@ public class SortAlgo {
 
         Sort<Integer> sortQuickOptimized = (arr)->{quickSortOptimized(arr);};
         testSort(sortQuickOptimized, count, "Quick sort optimized", ordered);
+
+        // test duplicated array
+        boolean duplicated = true;
+        testSort(sortQuickOptimized, count, "Quick sort optimized with most duplicated", ordered, duplicated);
+
+        Sort<Integer> sortQuick2Ways = (arr)->{ quickSort2Ways(arr);};
+        testSort(sortQuick2Ways, count, "Quick sort 2 ways with most duplicated", ordered, duplicated);
+
     }
 }

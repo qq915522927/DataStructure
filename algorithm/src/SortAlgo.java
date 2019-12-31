@@ -119,7 +119,43 @@ public class SortAlgo {
     public static <T extends Comparable> void quickSort2Ways(T[] array){
         quickSort2Ways(array, 0, array.length-1);
     }
+    public static <T extends Comparable> void quickSort3Ways(T[] array){
+        quickSort3Ways(array, 0, array.length-1);
+    }
 
+    private static <T extends Comparable> void quickSort3Ways(T[] array, int l, int r){
+        if((r-l)<15){
+            insetSortOptimized(array, l, r);
+            return;
+        }
+        // partition
+        Random random = new Random();
+        swap(l, random.nextInt(r-l+1) + l, array);
+        T pivotal = array[l];
+        int lt = l;
+        int gt = r + 1;
+        int i = l+1;
+        while (i<gt){
+            if(array[i].compareTo(pivotal)>0){
+                swap(gt-1, i, array);
+                gt --;
+            }
+            if(array[i].compareTo(pivotal)<0){
+                swap(i, lt+1, array);
+                lt++;
+                i++;
+            }
+            if(array[i].compareTo(pivotal)==0){
+                i++;
+            }
+        }
+        swap(l, lt, array);
+        lt --;
+
+        quickSort3Ways(array, l, lt);
+        quickSort3Ways(array, gt, r);
+
+    }
     private static <T extends Comparable> void quickSort2Ways(T[] array, int l, int r){
         if((r-l) <= 15){
             insetSortOptimized(array, l, r);
@@ -304,7 +340,7 @@ public class SortAlgo {
 //        Sort<Integer> sort1 = (arr)->{mergeSort(arr);};
 //        testSort(sort1, 100000, "Merge sort1");
 
-        int count = 10000;
+        int count = 1000000;
         boolean ordered = false;
         System.out.println(String.format("Test for Count %s --------", count));
 //        Sort<Integer> sort2 = (arr)->{insetSort(arr);};
@@ -324,12 +360,19 @@ public class SortAlgo {
         Sort<Integer> sortQuickOptimized = (arr)->{quickSortOptimized(arr);};
         testSort(sortQuickOptimized, count, "Quick sort optimized", ordered);
 
-        // test duplicated array
-        boolean duplicated = true;
-        testSort(sortQuickOptimized, count, "Quick sort optimized with most duplicated", ordered, duplicated);
-
         Sort<Integer> sortQuick2Ways = (arr)->{ quickSort2Ways(arr);};
+        Sort<Integer> sortQuick3Ways = (arr)->{ quickSort3Ways(arr);};
+
+        testSort(sortQuick2Ways, count, "Quick sort 2 ways", ordered);
+        testSort(sortQuick3Ways, count, "Quick sort 3 ways", ordered);
+        // test duplicated array
+        System.out.println("+++++++++++test duplicated items+++++++++");
+        boolean duplicated = true;
+//        testSort(sortQuickOptimized, count, "Quick sort optimized with most duplicated", ordered, duplicated);
+
         testSort(sortQuick2Ways, count, "Quick sort 2 ways with most duplicated", ordered, duplicated);
+
+        testSort(sortQuick3Ways, count, "Quick sort 3 ways with most duplicated", ordered, duplicated);
 
     }
 }

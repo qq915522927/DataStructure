@@ -1,13 +1,10 @@
 import java.util.Random;
 
 public class SortAlgo {
-    public interface Sort<T>{
-        public  void sort(T[] array);
-    }
     public static <T extends Comparable> void insetSort(T[] array){
         for (int i = 1; i < array.length; i++) {
             for (int j = i; j>=1 && array[j].compareTo(array[j-1])<0 ; j--) {
-                swap(j, j-1, array);
+                TestHelper.swap(j, j-1, array);
             }
         }
     }
@@ -130,18 +127,18 @@ public class SortAlgo {
         }
         // partition
         Random random = new Random();
-        swap(l, random.nextInt(r-l+1) + l, array);
+        TestHelper.swap(l, random.nextInt(r-l+1) + l, array);
         T pivotal = array[l];
         int lt = l;
         int gt = r + 1;
         int i = l+1;
         while (i<gt){
             if(array[i].compareTo(pivotal)>0){
-                swap(gt-1, i, array);
+                TestHelper.swap(gt-1, i, array);
                 gt --;
             }
             if(array[i].compareTo(pivotal)<0){
-                swap(i, lt+1, array);
+                TestHelper.swap(i, lt+1, array);
                 lt++;
                 i++;
             }
@@ -149,7 +146,7 @@ public class SortAlgo {
                 i++;
             }
         }
-        swap(l, lt, array);
+        TestHelper.swap(l, lt, array);
         lt --;
 
         quickSort3Ways(array, l, lt);
@@ -167,7 +164,7 @@ public class SortAlgo {
     private static <T extends Comparable> int partition2ways(T[] array, int l, int r){
         Random random = new Random();
         int maxIndex = r+1;
-        swap(l, random.nextInt(r-l+1) + l, array);
+        TestHelper.swap(l, random.nextInt(r-l+1) + l, array);
         T flag = array[l];
         int i = l + 1;
         int j = r;
@@ -181,13 +178,13 @@ public class SortAlgo {
             if(i>j)
                 break;
             //这里有一个隐含条件，即，array[i] == array[j]
-            swap(i, j, array);
+            TestHelper.swap(i, j, array);
             i++;
             j--;
 
         }
         assert i-1 == j;
-        swap(l, i-1, array);
+        TestHelper.swap(l, i-1, array);
         return i-1;
 
 
@@ -218,16 +215,16 @@ public class SortAlgo {
     }
     private static <T extends Comparable> int partition(T[] array, int l, int r){
         Random random = new Random();
-        swap(l, random.nextInt(r - l) + l, array);
+        TestHelper.swap(l, random.nextInt(r - l) + l, array);
         T flagEle = array[l];
         int mid = l;
         for (int i = l+1; i <r+1 ; i++) {
             if (flagEle.compareTo(array[i]) > 0) {
-                swap(mid + 1, i, array);
+                TestHelper.swap(mid + 1, i, array);
                 mid++;
             }
         }
-        swap(l, mid, array);
+        TestHelper.swap(l, mid, array);
         return mid;
     }
     private static <T extends Comparable> void mergeSortOptimized(T[] array, int l, int r){
@@ -252,127 +249,50 @@ public class SortAlgo {
         merge(array, l, mid, r);
 
     }
-    private static <T> void swap(int i, int j,T[] array){
-        T temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
 
-    private static Integer[] generateRandomArray(int count) throws Exception {
-        Integer[] res = new Integer[count];
-        Random random = new Random();
-        for (int i = 0; i < count; i++) {
-            res[i] = random.nextInt(Integer.MAX_VALUE);
-        }
-        return res;
-    }
-    private static Integer[] generateArrayWithDuplicates(int count, int diffCount) throws Exception {
-        Integer[] res = new Integer[count];
-        Random random = new Random();
-        int n = random.nextInt(Integer.MAX_VALUE);
-        for (int i = 0; i < count; i++) {
-            res[i] = n;
-        }
-        for (int i = 0; i < diffCount; i++) {
-            int index = random.nextInt(count);
-            res[index] = random.nextInt(Integer.MAX_VALUE);
-        }
-
-        return res;
-    }
-
-    private static Integer[] generateNeayOrderedArray(int count, int numNotOrder) throws Exception {
-        Integer[] res = new Integer[count];
-        for (int i = 0; i < count; i++) {
-            res[i] = i;
-        }
-        Random random = new Random();
-        for (int i = 0; i < numNotOrder; i++) {
-            int p = random.nextInt(count-1);
-            int q = random.nextInt(count-1);
-            swap(p, q, res);
-
-        }
-        return res;
-    }
-
-    private static Boolean checkOrder(Integer[] array) throws Exception {
-        for (int i = 0; i < array.length-1; i++) {
-            if(array[i]>array[i+1]){
-                System.out.println("The array is not ordered");
-                throw new Exception("Invalid order");
-            }
-        }
-        System.out.println("The array is ordered");
-        return true;
-    }
-    private static <T> void testSort(Sort algo, int count, String name, boolean nearlyOrdered) throws Exception {
-        testSort(algo, count, name, nearlyOrdered, false);
-    }
-    private static <T> void testSort(Sort algo, int count, String name, boolean nearlyOrdered, boolean mostDuplicated) throws Exception {
-
-        long start = System.nanoTime();
-        Integer[] array;
-        if(!nearlyOrdered)
-            array = generateRandomArray(count) ;
-        else
-            array = generateNeayOrderedArray(count, 30);
-
-        if(mostDuplicated)
-            array = generateArrayWithDuplicates(count, 30);
-
-        StringBuilder builder = new StringBuilder();
-        builder.append("-------Test ");
-        builder.append(name);
-        builder.append("-----");
-        if(nearlyOrdered )
-            builder.append("Ordered");
-        else
-            builder.append("Random");
-        builder.append("-----");
-        System.out.println(builder.toString());
-        algo.sort(array);
-        long end = System.nanoTime();
-        System.out.println(String.format("Elapsed %f", (end-start)/1000000000.0));
-        checkOrder(array);
-    }
     public static void main(String[] args) throws Exception {
 //        Sort<Integer> sort1 = (arr)->{mergeSort(arr);};
 //        testSort(sort1, 100000, "Merge sort1");
 
         int count = 1000000;
-        boolean ordered = false;
+        boolean ordered = true;
         System.out.println(String.format("Test for Count %s --------", count));
 //        Sort<Integer> sort2 = (arr)->{insetSort(arr);};
 //        testSort(sort2, count, "Insert sort", ordered);
 //        Sort<Integer> sort3 = (arr)->{insetSortOptimized(arr);};
 //        testSort(sort3, count, "Insert sort Optimized", ordered);
 
-        Sort<Integer> sortMerge = (arr)->{mergeSort(arr);};
-        testSort(sortMerge, count, "Merge sort", ordered);
+        TestHelper.Sort<Integer> sortMerge = (arr)->{mergeSort(arr);};
+        TestHelper.testSort(sortMerge, count, "Merge sort", ordered);
 
-        Sort<Integer> sortMerge2 = (arr)->{mergeSortOptimized(arr);};
-        testSort(sortMerge2, count, "Merge sort optimized", ordered);
+        TestHelper.Sort<Integer> sortMerge2 = (arr)->{mergeSortOptimized(arr);};
+        TestHelper.testSort(sortMerge2, count, "Merge sort optimized", ordered);
 
-        Sort<Integer> sortQuick = (arr)->{quickSort(arr);};
-        testSort(sortQuick, count, "Quick sort", ordered);
+//        TestHelper.Sort<Integer> sortQuick = (arr)->{quickSort(arr);};
+//        TestHelper.testSort(sortQuick, count, "Quick sort", ordered);
 
-        Sort<Integer> sortQuickOptimized = (arr)->{quickSortOptimized(arr);};
-        testSort(sortQuickOptimized, count, "Quick sort optimized", ordered);
+        TestHelper.Sort<Integer> sortQuickOptimized = (arr)->{quickSortOptimized(arr);};
+        TestHelper.testSort(sortQuickOptimized, count, "Quick sort optimized", ordered);
 
-        Sort<Integer> sortQuick2Ways = (arr)->{ quickSort2Ways(arr);};
-        Sort<Integer> sortQuick3Ways = (arr)->{ quickSort3Ways(arr);};
+        TestHelper.Sort<Integer> sortQuick2Ways = (arr)->{ quickSort2Ways(arr);};
+        TestHelper.Sort<Integer> sortQuick3Ways = (arr)->{ quickSort3Ways(arr);};
 
-        testSort(sortQuick2Ways, count, "Quick sort 2 ways", ordered);
-        testSort(sortQuick3Ways, count, "Quick sort 3 ways", ordered);
+        TestHelper.testSort(sortQuick2Ways, count, "Quick sort 2 ways", ordered);
+        TestHelper.testSort(sortQuick3Ways, count, "Quick sort 3 ways", ordered);
+
+        HeapSort heapSortWrap = new HeapSort();
+        TestHelper.Sort<Integer> heapSort = heapSortWrap::heapSort;
+        TestHelper.testSort(heapSort, count, "Heap sort", ordered);
         // test duplicated array
         System.out.println("+++++++++++test duplicated items+++++++++");
         boolean duplicated = true;
 //        testSort(sortQuickOptimized, count, "Quick sort optimized with most duplicated", ordered, duplicated);
 
-        testSort(sortQuick2Ways, count, "Quick sort 2 ways with most duplicated", ordered, duplicated);
+        TestHelper.testSort(sortQuick2Ways, count, "Quick sort 2 ways with most duplicated", ordered, duplicated);
 
-        testSort(sortQuick3Ways, count, "Quick sort 3 ways with most duplicated", ordered, duplicated);
+        TestHelper.testSort(sortQuick3Ways, count, "Quick sort 3 ways with most duplicated", ordered, duplicated);
+
+        TestHelper.testSort(heapSort, count, "Heap sort with most duplicated", ordered, duplicated);
 
     }
 }

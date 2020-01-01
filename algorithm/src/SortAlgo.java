@@ -161,7 +161,7 @@ public class SortAlgo {
             insetSortOptimized(array, l, r);
             return;}
         int m = partition2ways(array, l, r);
-        quickSort2Ways(array, l, m);
+        quickSort2Ways(array, l, m-1);
         quickSort2Ways(array, m+1, r);
     }
     private static <T extends Comparable> int partition2ways(T[] array, int l, int r){
@@ -203,7 +203,7 @@ public class SortAlgo {
             return;
         }
         int mid = partition(array, l, r);
-        quickSort(array, l, mid);
+        quickSort(array, l, mid-1);
         quickSort(array, mid+1, r);
 
     }
@@ -212,7 +212,7 @@ public class SortAlgo {
         if(l>=r)
             return;
         int mid = partition(array, l, r);
-        quickSort(array, l, mid);
+        quickSort(array, l, mid - 1);
         quickSort(array, mid+1, r);
 
     }

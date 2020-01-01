@@ -3,11 +3,14 @@
         private int size;
         private T[] data;
         private int[] indexs;
+        // data中 index对应在堆中的位置
+        private int[] heapPositions;
         private int capacity;
 
         IndexHeap(int capaticy){
             data = (T[])new Comparable[capaticy];
             indexs = new int[capaticy + 1];
+            heapPositions = new int[capaticy];
             size = 0;
         }
 
@@ -28,6 +31,7 @@
 
             data[index] = ele;
             indexs[size+1] = index;
+            heapPositions[index] = size+1;
             size ++;
             shiftUp(size);
             if(!isValid()){
@@ -50,6 +54,8 @@
                 int p = parent(index);
                 if (p>0 && data[indexs[p]].compareTo(data[indexs[index]])>0){
                     swap(p, index);
+                    heapPositions[indexs[index]] = index;
+                    heapPositions[indexs[p]] = p;
                     index = p;
                 } else{
                     break;
@@ -58,12 +64,9 @@
         }
         public void update(int index, T ele) throws Exception {
             data[index] = ele;
-            for (int i = 1; i < size +1; i++) {
-                if(indexs[i] == index){
-                    shifDown(i);
-                    shiftUp(i);
-                }
-            }
+            int i = heapPositions[index];
+            shifDown(i);
+            shiftUp(i);
             if(!isValid()){
                 throw new Exception("Not valid");
             }
@@ -80,6 +83,8 @@
                     minIndex = leftChild(index) + 1;
                 if(data[indexs[index]].compareTo(data[indexs[minIndex]])>0){
                     swap(index, minIndex);
+                    heapPositions[indexs[index]] = index;
+                    heapPositions[indexs[minIndex]] = minIndex;
                 } else {
                     break;
                 }
@@ -201,8 +206,10 @@
                 System.out.println(heap);
             }
 //            System.out.println(heap);
-            heap.update(33, 100000);
-            heap.update(15, 0);
+            for (int i = 0; i < 30 ; i++) {
+
+                heap.update(i, i);
+            }
             System.out.println(heap);
             Integer[] resArray = new Integer[50];
             for (int i = 0; i < resArray.length; i++) {

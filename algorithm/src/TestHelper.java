@@ -4,6 +4,13 @@ public class TestHelper {
     public interface Sort<T>{
         public  void sort(T[] array);
     }
+    public static  <T> void suffleArray(T[] array){
+        Random random = new Random();
+        for (int i = 0; i < array.length; i++) {
+            swap(0, random.nextInt(array.length), array);
+        }
+
+    }
     public static Boolean checkOrder(Integer[] array) throws Exception {
         for (int i = 0; i < array.length-1; i++) {
             if(array[i]>array[i+1]){

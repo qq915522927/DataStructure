@@ -3,6 +3,13 @@
         private int size;
         private T[] data;
         private int[] indexs;
+        private int capacity;
+
+        IndexHeap(int capaticy){
+            data = (T[])new Comparable[capaticy];
+            indexs = new int[capaticy + 1];
+            size = 0;
+        }
 
         IndexHeap(T[] array){
             data = array;
@@ -15,7 +22,19 @@
                 shifDown(i);
             }
         }
+        public void insert(int index, T ele) throws Exception {
+            assert size + 1 <= capacity;
+            assert index >= 0 && index < capacity;
 
+            data[index] = ele;
+            indexs[size+1] = index;
+            size ++;
+            shiftUp(size);
+            if(!isValid()){
+                System.out.println(toString());
+                throw new Exception("not valid");
+            }
+        }
 
         public T extractEle(){
             T res = data[indexs[1]];
@@ -37,13 +56,16 @@
                 }
             }
         }
-        public void update(int index, T ele){
+        public void update(int index, T ele) throws Exception {
             data[index] = ele;
             for (int i = 1; i < size +1; i++) {
                 if(indexs[i] == index){
                     shifDown(i);
                     shiftUp(i);
                 }
+            }
+            if(!isValid()){
+                throw new Exception("Not valid");
             }
         }
 
@@ -85,13 +107,49 @@
 
         public String toString() {
             StringBuilder builder = new StringBuilder();
+            builder.append('\n');
             builder.append('[');
             for (int i = 1; i < size + 1; i++) {
                 builder.append(indexs[i]);
                 builder.append(", ");
             }
             builder.append(']');
+            builder.append('\n');
+            builder.append('[');
+            for (int i = 1; i < size + 1; i++) {
+                builder.append(data[indexs[i]]);
+                builder.append(", ");
+            }
+            builder.append(']');
             return builder.toString();
+        }
+        public boolean isValid222(){
+            boolean valid = true;
+            for (int i = 1; i <= size ; i++) {
+                if(leftChild(i) > size){
+                    return true;
+                }
+                T min = data[indexs[leftChild(i)]];
+                if(leftChild(i)+1 <= size && data[indexs[leftChild(i)+1]].compareTo(min) <0){
+                    min = data[indexs[leftChild(i)+1]];
+                }
+                if(min.compareTo(data[indexs[i]]) < 0){
+                    valid = false;
+                    break;
+                }
+            }
+            return valid;
+        }
+        public boolean isValid333(){
+            boolean valid = true;
+            T min = data[indexs[1]];
+            for (int i = 2; i <= size ; i++) {
+                if(data[indexs[i]].compareTo(min)<0){
+                    valid = false;
+                    break;
+                }
+            }
+            return valid;
         }
         public boolean isValid(){
             return  isValid(1);
@@ -112,7 +170,7 @@
             return data[indexs[root]].compareTo(min) <= 0 && isValid(leftChild(root)) && isValid(leftChild(root)+1);
 
         }
-        public  static void main(String[] args) throws Exception {
+        public static void testIndexHeap1() throws Exception {
             Integer[] array = new Integer[50];
             for (int i = 0; i < array.length; i++) {
                 array[i] = i+30;
@@ -129,5 +187,33 @@
                 System.out.println(heap);
             }
             TestHelper.checkOrder(resArray);
+
+        }
+        public static void testIndexHeap2() throws Exception {
+            Integer[] array = new Integer[50];
+            for (int i = 0; i < array.length; i++) {
+                array[i] = i+30;
+            }
+            TestHelper.suffleArray(array);
+            IndexHeap<Integer> heap = new IndexHeap<Integer>(50);
+            for (int i = 0; i < array.length; i++) {
+                heap.insert(i, array[i]);
+                System.out.println(heap);
+            }
+//            System.out.println(heap);
+            heap.update(33, 100000);
+            heap.update(15, 0);
+            System.out.println(heap);
+            Integer[] resArray = new Integer[50];
+            for (int i = 0; i < resArray.length; i++) {
+                resArray[i] = heap.extractEle();
+//                System.out.println(resArray[i]);
+//                System.out.println(heap);
+            }
+            TestHelper.checkOrder(resArray);
+
+        }
+        public  static void main(String[] args) throws Exception {
+            testIndexHeap2();
         }
     }

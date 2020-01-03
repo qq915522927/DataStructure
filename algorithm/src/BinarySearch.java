@@ -21,7 +21,8 @@ public class BinarySearch {
         }
         return -1;
     }
-
+    // 求有序数组中，最接近　ｅ的索引(小于等于), 若果有重复元素，　则返回
+    // 最大的索引
     public static int floor(Comparable[] array, Comparable e){
         if(array.length == 0){
             return -1;

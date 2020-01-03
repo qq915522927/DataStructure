@@ -9,7 +9,16 @@ public class TestHelper {
         for (int i = 0; i < array.length; i++) {
             swap(0, random.nextInt(array.length), array);
         }
-
+    }
+    public static void printArray(Object[] array){
+        StringBuilder builder = new StringBuilder();
+        builder.append('[');
+        for (int i = 0; i < array.length; i++) {
+            builder.append(array[i].toString());
+            builder.append(", ");
+        }
+        builder.append(']');
+        System.out.println(builder.toString());
     }
     public static Boolean checkOrder(Integer[] array) throws Exception {
         for (int i = 0; i < array.length-1; i++) {

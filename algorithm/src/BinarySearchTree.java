@@ -82,18 +82,15 @@ public class BinarySearchTree<K extends Comparable, V> {
         if(root==null){
             return null;
         }
-        if(root.right == null && root.left == null){
-            return null;
-        }
-        if(root.right == null && root.left != null){
+        if(root.right == null)
             return root.left;
-        }
         root.right = removeMax(root.right);
         return root;
     }
     public V removeKey(K key) throws Exception {
         V res = get(key);
         root = removeNode(root, key);
+        size --;
         return res;
     }
     private Node removeNode(Node root, K key) throws Exception {
@@ -223,9 +220,11 @@ public class BinarySearchTree<K extends Comparable, V> {
         bst2.addEle(3, 5);
         bst2.addEle(4, 5);
         bst2.addEle(9, 5);
+        System.out.println("size: " +bst2.size);
         System.out.println(bst2.levelTraverse());
         System.out.println(bst2.removeKey(3));
         System.out.println(bst2.removeKey(4));
+        System.out.println("size: " + bst2.size);
         System.out.println(bst2.levelTraverse());
     }
 }

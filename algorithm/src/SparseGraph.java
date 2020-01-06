@@ -1,7 +1,8 @@
+import java.util.ArrayList;
 import java.util.Vector;
 
 // 稀疏图，　邻接表
-public class SparseGraph {
+public class SparseGraph implements Graph {
     private int n;
     private int m;
     private boolean directed;
@@ -33,7 +34,7 @@ public class SparseGraph {
             g[w].add(v);
         m++;
     }
-    boolean hasEdge(int v, int w){
+    public boolean hasEdge(int v, int w){
         for (int i = 0; i < g[v].size(); i++) {
             if(g[v].elementAt(i) == w)
                 return true;
@@ -41,8 +42,24 @@ public class SparseGraph {
         return false;
     }
 
+    public void DFS(int v){
+        boolean[] arrived = new boolean[n];
+        ArrayList<Integer> nodes = new ArrayList<>();
+        DFS(v, arrived, nodes);
+        System.out.println("Depth First Result: " + nodes);
+    }
+    private void DFS(int v, boolean[] arrived, ArrayList<Integer> nodes){
+        if(arrived[v])
+            return;
+        arrived[v] = true;
+        nodes.add(v);
+        for(int adjV : adj(v)){
+            DFS(adjV, arrived, nodes);
+        }
+    }
+
     @Override
-    public String toString() {
+    public void show() {
         StringBuilder builder = new StringBuilder();
         builder.append("[\n");
         for (int i = 0; i < g.length; i++) {
@@ -58,8 +75,16 @@ public class SparseGraph {
             builder.append("\n");
         }
         builder.append(']');
-        return builder.toString();
+        System.out.println(builder.toString());
+
     }
+
+    public Iterable<Integer> adj(int v){
+        assert v >= 0 && v < n;
+        return g[v];
+    }
+
+
 
     public static void main(String[] args) {
         SparseGraph graph = new SparseGraph(7, false);
@@ -67,6 +92,6 @@ public class SparseGraph {
         graph.addEdge(0, 3);
         graph.addEdge(3, 5);
         graph.addEdge(3, 6);
-        System.out.println(graph);
+        graph.show();
     }
 }

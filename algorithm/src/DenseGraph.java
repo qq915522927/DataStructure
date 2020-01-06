@@ -1,4 +1,6 @@
-public class DenseGraph {
+import java.util.Vector;
+
+public class DenseGraph implements Graph {
 
     // 稠密图，　使用邻接矩阵
     private int n; // ｎｕｍ of node
@@ -25,8 +27,32 @@ public class DenseGraph {
         g[v][w] = true;
         m++;
     }
-    private boolean hasEdge(int v,int w){
+    public Iterable<Integer> adj(int v){
+        assert v >= 0 && v < n;
+        Vector<Integer> adjV = new Vector<>();
+        for(int i=0; i < n; i++)
+            if(g[v][i])
+                adjV.add(i);
+        return adjV;
+    }
+    public boolean hasEdge(int v,int w){
         return g[v][w];
+    }
+
+    @Override
+    public void show() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("[\n");
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+
+                builder.append(g[i][j]);
+                builder.append(", ");
+            }
+            builder.append("\n");
+        }
+        builder.append("]\n");
+        System.out.println(builder.toString());
     }
 
 }

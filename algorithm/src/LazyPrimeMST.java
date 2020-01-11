@@ -7,7 +7,7 @@ public class LazyPrimeMST<Weight extends Number & Comparable> {
     private IndexHeap<Edge<Weight>> heap;
     private boolean[] marked; // 标记节点是否被访问过
     private Vector<Edge> mst; //　最小生成树的边
-    private Number mstWeght; // 最小生成树的权值
+    private Number weight; // 最小生成树的权值
 
     public LazyPrimeMST(WeightedGraph<Weight> graph) throws Exception {
         this.graph = graph;
@@ -25,6 +25,13 @@ public class LazyPrimeMST<Weight extends Number & Comparable> {
                 visit(minEdge.w());
 
         }
+        weight = mst.elementAt(0).wt();
+        for (int i = 1; i < mst.size() ; i++) {
+            weight = mst.elementAt(i).wt().doubleValue() + weight.doubleValue();
+        }
+    }
+    public Number weight(){
+        return weight;
     }
     public void showMst(){
         System.out.println();
@@ -44,7 +51,7 @@ public class LazyPrimeMST<Weight extends Number & Comparable> {
                     heap.insert(e.other(v), e);
             }
             else {
-                if (heap.getEleByIndex(e.other(v)).wt().compareTo(e.wt()) < 0)
+                if (heap.getEleByIndex(e.other(v)).wt().compareTo(e.wt()) > 0)
                     heap.update(e.other(v), e);
             }
         }

@@ -27,10 +27,10 @@ public class SparseWeightedGraph<Weight extends Number & Comparable> implements 
     public void addEdge(Edge e){
         assert e.v() >= 0 && e.v() < n;
         assert e.w() >= 0 && e.w() < n;
-        g[e.v()].add(e);
+        g[e.v()].add(new Edge<Weight>(e.v(), e.w(), (Weight)e.wt()));
         if(e.v()!=e.w() && !directed)
             // 无向图，　两边都要加上边
-            g[e.w()].add(e);
+            g[e.w()].add(new Edge<Weight>(e.w(), e.v(), (Weight)e.wt()));
         m++;
     }
     public boolean hasEdge(int v, int w){

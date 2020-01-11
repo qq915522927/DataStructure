@@ -7,10 +7,11 @@
         private int[] heapPositions;
         private int capacity;
 
-        IndexHeap(int capaticy){
-            data = (T[])new Comparable[capaticy];
-            indexs = new int[capaticy + 1];
-            heapPositions = new int[capaticy];
+        IndexHeap(int capacity){
+            data = (T[])new Comparable[capacity];
+            indexs = new int[capacity + 1];
+            this.capacity = capacity;
+            heapPositions = new int[capacity];
             size = 0;
         }
 
@@ -26,7 +27,7 @@
             }
         }
         public void insert(int index, T ele) throws Exception {
-            assert size + 1 <= capacity;
+            assert size + 1 <= capacity : String.format("size %d, capacity %d", size, capacity);
             assert index >= 0 && index < capacity;
 
             data[index] = ele;
@@ -42,6 +43,8 @@
 
         public T extractEle(){
             T res = data[indexs[1]];
+            data[indexs[1]] = null;
+            heapPositions[indexs[1]] = -1;
             swap(1, size);
             size --;
             shifDown(1);
@@ -52,15 +55,23 @@
             while (true)
             {
                 int p = parent(index);
-                if (p>0 && data[indexs[p]].compareTo(data[indexs[index]])>0){
-                    swap(p, index);
-                    heapPositions[indexs[index]] = index;
-                    heapPositions[indexs[p]] = p;
-                    index = p;
-                } else{
-                    break;
+                try {
+                    if (p > 0 && data[indexs[p]].compareTo(data[indexs[index]]) > 0) {
+                        swap(p, index);
+                        heapPositions[indexs[index]] = index;
+                        heapPositions[indexs[p]] = p;
+                        index = p;
+                    } else {
+                        break;
+                    }
+                }
+                catch (Exception e){
+                    System.out.println(e);
                 }
             }
+        }
+        public T getEleByIndex(int i){
+            return data[i];
         }
         public void update(int index, T ele) throws Exception {
             data[index] = ele;
@@ -95,6 +106,8 @@
             int t = indexs[i];
             indexs[i] = indexs[j];
             indexs[j] = t;
+            heapPositions[indexs[i]] = i;
+            heapPositions[indexs[j]] = j;
         }
         private int parent(int index){
             return index / 2;

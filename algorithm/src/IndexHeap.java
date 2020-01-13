@@ -50,6 +50,18 @@
             shifDown(1);
             return res;
         }
+        public int extractMinIndex(){
+            int res = indexs[1];
+            data[indexs[1]] = null;
+            heapPositions[indexs[1]] = -1;
+            swap(1, size);
+            size --;
+            shifDown(1);
+            return res;
+        }
+        public boolean contains(int index){
+            return heapPositions[index] != -1;
+        }
 
         private void shiftUp(int index){
             while (true)

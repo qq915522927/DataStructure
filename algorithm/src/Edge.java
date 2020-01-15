@@ -17,7 +17,7 @@ public class Edge<Weight extends Number & Comparable> implements Comparable<Edge
     public Weight wt(){return weight;}
 
     public int other(int x){
-        assert x == a || x == b;
+        assert x == a || x == b: String.format("a %s, b %s, x %s", a, b, x);
         return x == a ? b : a;
     }
 

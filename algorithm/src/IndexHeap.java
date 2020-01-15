@@ -12,6 +12,10 @@
             indexs = new int[capacity + 1];
             this.capacity = capacity;
             heapPositions = new int[capacity];
+            for (int i = 0; i < capacity; i++) {
+                heapPositions[i] = -1;
+                indexs[i] = -1;
+            }
             size = 0;
         }
 
@@ -86,6 +90,7 @@
             return data[i];
         }
         public void update(int index, T ele) throws Exception {
+//            assert !isEmpty();
             data[index] = ele;
             int i = heapPositions[index];
             shifDown(i);
@@ -104,12 +109,18 @@
                 if(leftChild(index) + 1 <=size &&
                         data[indexs[leftChild(index)+1]].compareTo(data[indexs[minIndex]])<0)
                     minIndex = leftChild(index) + 1;
-                if(data[indexs[index]].compareTo(data[indexs[minIndex]])>0){
-                    swap(index, minIndex);
-                    heapPositions[indexs[index]] = index;
-                    heapPositions[indexs[minIndex]] = minIndex;
-                } else {
-                    break;
+                try {
+
+                    if(data[indexs[index]].compareTo(data[indexs[minIndex]])>0){
+                        swap(index, minIndex);
+                        heapPositions[indexs[index]] = index;
+                        heapPositions[indexs[minIndex]] = minIndex;
+                    } else {
+                        break;
+                    }
+                }
+                catch (NullPointerException e){
+                    System.out.println();
                 }
                 index = minIndex;
             }

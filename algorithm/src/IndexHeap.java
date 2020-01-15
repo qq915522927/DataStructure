@@ -71,8 +71,7 @@
             while (true)
             {
                 int p = parent(index);
-                try {
-                    if (p > 0 && data[indexs[p]].compareTo(data[indexs[index]]) > 0) {
+                if (p > 0 && data[indexs[p]].compareTo(data[indexs[index]]) > 0) {
                         swap(p, index);
                         heapPositions[indexs[index]] = index;
                         heapPositions[indexs[p]] = p;
@@ -80,10 +79,6 @@
                     } else {
                         break;
                     }
-                }
-                catch (Exception e){
-                    System.out.println(e);
-                }
             }
         }
         public T getEleByIndex(int i){
@@ -109,19 +104,13 @@
                 if(leftChild(index) + 1 <=size &&
                         data[indexs[leftChild(index)+1]].compareTo(data[indexs[minIndex]])<0)
                     minIndex = leftChild(index) + 1;
-                try {
-
-                    if(data[indexs[index]].compareTo(data[indexs[minIndex]])>0){
+                if(data[indexs[index]].compareTo(data[indexs[minIndex]])>0){
                         swap(index, minIndex);
                         heapPositions[indexs[index]] = index;
                         heapPositions[indexs[minIndex]] = minIndex;
                     } else {
                         break;
                     }
-                }
-                catch (NullPointerException e){
-                    System.out.println();
-                }
                 index = minIndex;
             }
         }

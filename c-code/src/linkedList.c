@@ -3,7 +3,7 @@
 #include "linkedList.h"
 
 
-void list_init(List *list, void (*destory)(void *data)){
+    void list_init(List *list, void (*destory)(void *data)){
     list->size = 0;
     list->destory = destory;
     list->head = NULL;

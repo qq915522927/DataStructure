@@ -1,0 +1,22 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "gcc build active file",
+            "command": "/usr/bin/gcc",
+            "args": [
+                "-g",
+                "${file}",
+                "${workspaceFolder}/src/*.c",
+                "-o",
+                "${workspaceFolder}/build/${fileBasenameNoExtension}",
+                "-I",
+                "${workspaceFolder}/include"
+            ],
+            "options": {
+                "cwd": "/usr/bin"
+            }
+        }
+    ],
+    "version": "2.0.0"
+}

@@ -2,6 +2,8 @@
     "files.associations": {
         "linkedlist.h": "c",
         "linkedlist": "c",
-        "frames.h": "c"
+        "frames.h": "c",
+        "dlist.h": "c",
+        "stdio.h": "c"
     }
 }

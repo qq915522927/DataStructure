@@ -19,9 +19,10 @@ void list_destory(List *list){
         if(list_rem_next(list, NULL, (void **) &data) == 0 && 
             list->destory != NULL
         )
-        printf("--->Remove element <%d>\n", *data);
+        printf("--->Destory element <%d>\n", *data);
         list->destory(data);
     }
+    list->destory(list);
 }
 
 //在一个元素后面加一个元素

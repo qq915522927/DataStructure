@@ -4,7 +4,8 @@
         "linkedlist": "c",
         "frames.h": "c",
         "dlist.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "queue.h": "c"
     },
     "python.formatting.provider": "black"
 }

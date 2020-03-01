@@ -20,6 +20,7 @@ static void print_list(const List *list){
             ele = list_next(ele);
         }
     }
+    printf("\n");
     return;
 }
 int main(int argc, char const *argv[])

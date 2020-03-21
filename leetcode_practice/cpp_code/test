@@ -1,0 +1,1 @@
+https://jenkins7.svc.eng.vmware.com/job/RDOSS-CICD/job/rdoss-utils-nimbusctl/parambuild/?COMMAND=extend-lease&VM_NAME=svc.rdoss-osm-ci-vm-1634&POD=sc1-01-vc32&NIMBUS_LOCATION=sc&NIMBUS_USER=svc.rdoss&LEASE_DAYS=7

@@ -26,7 +26,7 @@ void list_destory(List *list){
 }
 
 //在一个元素后面加一个元素
-int list_ins_next(List *list, ListEle *ele, const void *data){
+    int list_ins_next(List *list, ListEle *ele, const void *data){
     ListEle * newEle;
 
     //分配需要的内存

@@ -5,7 +5,13 @@
         "frames.h": "c",
         "dlist.h": "c",
         "stdio.h": "c",
-        "queue.h": "c"
+        "queue.h": "c",
+        "chtbl.h": "c",
+        "stdlib.h": "c",
+        "set.h": "c"
     },
-    "python.formatting.provider": "black"
+    "disasexpl.associations": {
+        "src/*.c": "linkedList.s",
+    }
+
 }

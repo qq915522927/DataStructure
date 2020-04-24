@@ -3,6 +3,11 @@
 #include "set.h"
 #include "linkedList.h"
 
+ListEle * iter_list(List * list);
+Set * new_set(
+    int (*match) (const void *key1, const void* key2),
+    void (*destory)(void *)
+);
 
 int set_init(Set * set,
              int ( *match)(const void * key1, const void * key2), 

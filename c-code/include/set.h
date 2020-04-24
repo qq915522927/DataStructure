@@ -4,7 +4,7 @@
 
 typedef List Set;
 
-int set_init(Set *, 
+int set_init(Set *,
              int ( *match)(const void * key1, const void * key2), 
              void (*destory)(void *)
 );

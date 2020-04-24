@@ -16,7 +16,7 @@ void list_destory(List *list){
     int *data;
     while (list_size(list) > 0)
     {
-        if(list_rem_next(list, NULL, (void **) &data) == 0 && 
+        if(list_rem_next(list, NULL, (void **) &data) == 0 &&
             list->destory != NULL
         )
         printf("--->Destory element <%d>\n", *data);
